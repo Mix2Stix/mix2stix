@@ -19,9 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -658,11 +659,11 @@ public class MainWindow extends JFrame {
                                        );
         }
 
-//------------------------------------------------------------------------------
-// EINGABEN �BERPR�FEN
-//------------------------------------------------------------------------------
+		// ------------------------------------------------------------------------------
+		// EINGABEN ÜBERPRÜFEN
+		// ------------------------------------------------------------------------------
 
-        // Eingaben �berpr�fen
+		// Eingaben überprüfen
         public boolean inputIsCorrect(){
             if (
                isValidPathInput(txtSrcDir.getText(), txtDestDir.getText())
@@ -676,9 +677,9 @@ public class MainWindow extends JFrame {
             else return false;
         }
 
-        // �bergebene Inputs auf Korrektheit pr�fen
+		// übergebene Inputs auf Korrektheit prüfen
 		public boolean isValidPathInput(String sources, String destinations) {
-			Vector destinationVector = new Vector();
+			List<String> destinationList = new ArrayList<String>();
 			// Ziele
 			StringTokenizer st = new StringTokenizer(destinations, ";");
 			if (destinations.equals("")) {
@@ -691,7 +692,7 @@ public class MainWindow extends JFrame {
 				if (!isValidPath(token, "labeldestinationdir")) {
 					return false;
 				}
-				destinationVector.add(token);
+				destinationList.add(token);
 			}
 			// Quellen
 			st = new StringTokenizer(sources, ";");
@@ -705,8 +706,8 @@ public class MainWindow extends JFrame {
 				if (!isValidPath(token, "labelsourcedir")) {
 					return false;
 				}
-				for (int i = 0; i < destinationVector.size(); i++) {
-					if (!isDifferentPath(token, (String) destinationVector.get(i))) {
+				for (int i = 0; i < destinationList.size(); i++) {
+					if (!isDifferentPath(token, destinationList.get(i))) {
 						return false;
 					}
 				}
