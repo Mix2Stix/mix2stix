@@ -48,7 +48,7 @@ The elements of the main window have the follow-up functions:
 * Menu "Language":
   - "Load language": Loads a Mix2Stix language file.
   
-* Men� "?":
+* Menu "?":
   - "About": Shows more about Mix2Stix.
 	
 * Textfield "Sources":
