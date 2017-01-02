@@ -16,3 +16,4 @@ hs_err_pid*
 /bin/
 /m2s.log
 /mix2stix.conf
+/.gradle/

@@ -1,5 +1,18 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
     id 'eclipse'
+    id 'idea'
+}
+
+version = "1.2.0-SNAPSHOT"
+
+sourceCompatibility = 1.6
+
+mainClassName = "de.mix2stix.MainWindow"
+
+shadowJar {
+	baseName = "Mix2Stix"
+	mainClassName = "de.mix2stix.MainWindow"
 }
