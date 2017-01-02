@@ -1,13 +1,14 @@
+package de.mix2stix;
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
 //        =================               //
 //                                        //
-//  Tool zum Kopieren zufälliger Dateien  //
+//  Tool zum Kopieren zufï¿½lliger Dateien  //
 //                                        //
 ////////////////////////////////////////////
 //                                        //
-//         Dateifunktionalitäten          //
+//         Dateifunktionalitï¿½ten          //
 //                                        //
 ////////////////////////////////////////////
 
@@ -21,7 +22,7 @@ import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.Properties;
 
-// Dateifunktionalitäten für MainWindow
+// Dateifunktionalitï¿½ten fï¿½r MainWindow
 public class FunctionClass {
     // globale Programmvariablen
     private MainWindow myMainWindow;
@@ -43,7 +44,7 @@ public class FunctionClass {
 
     
 //------------------------------------------------------------------------------
-// FÜR DAS HAUPTFENSTER
+// Fï¿½R DAS HAUPTFENSTER
 //------------------------------------------------------------------------------
     
     // Konfigdatei auslesen
@@ -117,7 +118,7 @@ public class FunctionClass {
     	writeConfigfile(config);	
     }
 
-    // Einträge aus Settingsfile laden
+    // Eintrï¿½ge aus Settingsfile laden
     public String[] loadSettingsFromFile(File loadFrom){
         String[] data;
         try {
@@ -135,7 +136,7 @@ public class FunctionClass {
         return data;
     }
 
-    // Einträge in Settingsfile speichern
+    // Eintrï¿½ge in Settingsfile speichern
     public void saveSettingsToFile(String[] data, File saveTo){
         try {
             FileOutputStream file = new FileOutputStream(saveTo);
@@ -152,7 +153,7 @@ public class FunctionClass {
 
 
 //------------------------------------------------------------------------------
-// FÜR DAS STATUSFENSTER
+// Fï¿½R DAS STATUSFENSTER
 //------------------------------------------------------------------------------
     
     private String log;
@@ -167,7 +168,7 @@ public class FunctionClass {
                          );
     }
 
-    // Überschrift in Log-String schreiben
+    // ï¿½berschrift in Log-String schreiben
     public void addLogHeadLine(String text) {
         this.log = this.log + "\r\n\r\n[" + getCurrentTime() + "]\r\n"+ text + "\r\n";
     }
@@ -204,7 +205,7 @@ public class FunctionClass {
         String s;
         if (currentDate.getSeconds() < 10)  { s = "0"+currentDate.getSeconds(); }
         else                                { s = String.valueOf(currentDate.getSeconds()); }
-        // Rückgabe des Zeitstrings
+        // Rï¿½ckgabe des Zeitstrings
         return h+":"+m+":"+s;
     }
 }

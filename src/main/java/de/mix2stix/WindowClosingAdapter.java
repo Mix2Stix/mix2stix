@@ -1,3 +1,4 @@
+package de.mix2stix;
 import java.awt.*;
 import java.awt.event.*;
 

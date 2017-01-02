@@ -1,9 +1,10 @@
+package de.mix2stix;
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
 //        =================               //
 //                                        //
-//  Tool zum Kopieren zufälliger Dateien  //
+//  Tool zum Kopieren zufï¿½lliger Dateien  //
 //                                        //
 ////////////////////////////////////////////
 //                                        //
@@ -110,7 +111,7 @@ public class StatusWindow extends JFrame implements ActionListener {
         this.pack();
         this.setContentPane(panel);
 
-        // Größe und Position des Statusfensters
+        // Grï¿½ï¿½e und Position des Statusfensters
         Insets myInsets = this.getInsets();
         int myWidth = this.getContentPane().getWidth() + myInsets.left + myInsets.right;
         int myHeight = this.getContentPane().getHeight() + myInsets.top + myInsets.bottom;
@@ -126,13 +127,13 @@ public class StatusWindow extends JFrame implements ActionListener {
         this.setResizable(false);
     }
 
-    // zufällig Dateien kopieren, bis Limit erreicht wird
+    // zufï¿½llig Dateien kopieren, bis Limit erreicht wird
     public void startCopying(String sourcePath, String destPath, String maxSize, String filterarea, boolean clearDest, boolean force) {
         // Logfile initialisieren
         this.myFunctionClass.initLogFile();
         // Hauptprogrammfenster deaktivieren
         myMainWindow.setEnabled(false);
-        // Statusfenster anzeigen Oberfläche initialisieren
+        // Statusfenster anzeigen Oberflï¿½che initialisieren
         setVisible(true);
         resetValuesOfGuiElements();
         
@@ -143,7 +144,7 @@ public class StatusWindow extends JFrame implements ActionListener {
 
 
 //------------------------------------------------------------------------------
-// GUI-FUNKTIONALITÄTEN
+// GUI-FUNKTIONALITï¿½TEN
 //------------------------------------------------------------------------------
 
     // Usereingabe verarbeiten
@@ -166,7 +167,7 @@ public class StatusWindow extends JFrame implements ActionListener {
         }
     }
 
-    // Alle GUI-Elemente auf Standardwerte zurücksetzen
+    // Alle GUI-Elemente auf Standardwerte zurï¿½cksetzen
     public void resetValuesOfGuiElements(){
         this.lblAction.setText((String)language.get("statuswindowlabelactionnoaction"));
         this.lblFileName.setText("");

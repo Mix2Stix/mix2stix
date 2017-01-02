@@ -1,13 +1,14 @@
+package de.mix2stix;
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
 //        =================               //
 //                                        //
-//  Tool zum Kopieren zufälliger Dateien  //
+//  Tool zum Kopieren zufï¿½lliger Dateien  //
 //                                        //
 ////////////////////////////////////////////
 //                                        //
-//       Anzeigefenster für Logdatei      //
+//       Anzeigefenster fï¿½r Logdatei      //
 //                                        //
 ////////////////////////////////////////////
 

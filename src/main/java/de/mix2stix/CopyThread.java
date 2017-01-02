@@ -1,13 +1,14 @@
+package de.mix2stix;
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
 //        =================               //
 //                                        //
-//  Tool zum Kopieren zufälliger Dateien  //
+//  Tool zum Kopieren zufï¿½lliger Dateien  //
 //                                        //
 ////////////////////////////////////////////
 //                                        //
-//         Kopierfunktionalität           //
+//         Kopierfunktionalitï¿½t           //
 //                                        //
 ////////////////////////////////////////////
 
@@ -66,7 +67,7 @@ public class CopyThread extends Thread {
     
     // ...und los gehts :)
     public void run() {
-        // übergebenen FilterArea-String in Array zerlegen und Filtertext für die Ausgabe zusammenstellen
+        // ï¿½bergebenen FilterArea-String in Array zerlegen und Filtertext fï¿½r die Ausgabe zusammenstellen
         Vector filters = filterAreaToVector(filterarea);
         String filterText = new String("");
         for (int i=0; i<filters.size();i++){
@@ -79,7 +80,7 @@ public class CopyThread extends Thread {
         this.byteCopied = 0;
         this.filesCopied = 0;
 
-        // Zielverzeichnis prüfen und ggfs. leeren
+        // Zielverzeichnis prï¿½fen und ggfs. leeren
         File destDir = new File(destPath);
         myStatusWindow.lblAction.setText((String)language.get("statuswindowlabelactioncheckdestination") + " (" + destDir.getPath() + ")");
         myFunctionClass.addLogHeadLine((String)language.get("loglinecheckdestination") + " " + destDir.getPath());
@@ -90,9 +91,9 @@ public class CopyThread extends Thread {
         Vector allSrcFiles = new Vector();
         // Einzelne Quellverzeichnisse auslesen
         StringTokenizer st = new StringTokenizer(sourcePath, ";");
-        // Für jedes Quellverzeichnis...
+        // Fï¿½r jedes Quellverzeichnis...
         while (st.hasMoreTokens()) {
-            // Aktuelles Verzeichnis einlesen und EInträge in temporären Vektor schreiben
+            // Aktuelles Verzeichnis einlesen und EIntrï¿½ge in temporï¿½ren Vektor schreiben
             String currentPath = st.nextToken();
             myStatusWindow.lblAction.setText((String)language.get("statuswindowlabelactionreadsource") + " (" + currentPath + ")");
             myFunctionClass.addLogHeadLine((String)language.get("loglinereadsource")+ " " + currentPath);
@@ -100,7 +101,7 @@ public class CopyThread extends Thread {
             myStatusWindow.lblPercent.setText(filterText + ": 0");
             File currentDir = new File(currentPath);
             Vector currentSrcFiles = indexFilteredFiles(currentDir, filters, filterText);
-            // Alle Einträge des temporären Vektors in den Gesamt-Vektor schreiben
+            // Alle Eintrï¿½ge des temporï¿½ren Vektors in den Gesamt-Vektor schreiben
             for (int i=0;i<currentSrcFiles.size();i++){
                 allSrcFiles.addElement(currentSrcFiles.elementAt(i));
             }
@@ -117,35 +118,35 @@ public class CopyThread extends Thread {
         if (allSrcFiles.size() == 0) {
             cancelAndReturn(3);
         }
-        // Abbruch, wenn zu kopierende Daten 0 Byte groß sind
+        // Abbruch, wenn zu kopierende Daten 0 Byte groï¿½ sind
         if (sizeOfAll == 0) {
             cancelAndReturn(4);
         }
 
         // ...ansonsten 
         else {
-            // neuen Vektor mit zufälligen Dateien bis zur vorgegebenen Byte-Grenze füllen
+            // neuen Vektor mit zufï¿½lligen Dateien bis zur vorgegebenen Byte-Grenze fï¿½llen
             Vector randomFiles = fillRandomVector(allSrcFiles, this.maxSize);
-            // Kopier-Thread mit dem zufällig befüllten Vektor starten
+            // Kopier-Thread mit dem zufï¿½llig befï¿½llten Vektor starten
             copyRandomFiles(randomFiles,destDir,force);
         }
     }
     
-    // Vector bis zur Bytegrenze befüllen
+    // Vector bis zur Bytegrenze befï¿½llen
     private Vector fillRandomVector(Vector allSrcFiles, String mbMax){
         long bytesMax = new Long(mbMax).longValue() * 1024 * 1024;
         Vector randomVector = new Vector();
         Random rand = new Random();
         long bytesToCopy = 0;
         while (true) {
-            int randIndex = Math.abs(rand.nextInt()) % allSrcFiles.size();               // Zufälliges FileEntry...
+            int randIndex = Math.abs(rand.nextInt()) % allSrcFiles.size();               // Zufï¿½lliges FileEntry...
             File currentFileEntry = ((File)(allSrcFiles.get(randIndex)));                //   ...aus dem Quell-Vektor holen
-            bytesToCopy += currentFileEntry.length();                                    // Zu kopierende Gesamtgröße erhöhen
-            if (bytesToCopy > bytesMax) {                                                // Wenn maximale Größe überschritten:
-                bytesToCopy -= currentFileEntry.length();                                 //   letzte Dateigröße wieder abziehen...
+            bytesToCopy += currentFileEntry.length();                                    // Zu kopierende Gesamtgrï¿½ï¿½e erhï¿½hen
+            if (bytesToCopy > bytesMax) {                                                // Wenn maximale Grï¿½ï¿½e ï¿½berschritten:
+                bytesToCopy -= currentFileEntry.length();                                 //   letzte Dateigrï¿½ï¿½e wieder abziehen...
                 break;                                                                    //   ...und Schleife beenden.
             }
-            randomVector.addElement(currentFileEntry);                                    // Ansonsten: Datei zum neuen Vektor hinzufügen...
+            randomVector.addElement(currentFileEntry);                                    // Ansonsten: Datei zum neuen Vektor hinzufï¿½gen...
             allSrcFiles.remove(randIndex);                                               // ...und aus dem Quell-Vektor entfernen
             if (allSrcFiles.size() == 0) break;                                          // Abbruch, wenn keine weiteren Dateien zum Kopieren da sind
         }
@@ -164,7 +165,7 @@ public class CopyThread extends Thread {
         return filterVector;
     }
     
-    // Speichernutzung des Zielverzeichnisses überprüfen
+    // Speichernutzung des Zielverzeichnisses ï¿½berprï¿½fen
     public void checkDestDir(File dest, boolean clearDest) {
         // alle Dateien einlesen
         Vector indexOfDest = indexFilesAndDirs(dest);
@@ -185,7 +186,7 @@ public class CopyThread extends Thread {
 	            	cancelAndReturn(0);
 	            }
             }
-            // wenn nicht gelöscht werden soll
+            // wenn nicht gelï¿½scht werden soll
             else {
                 myFunctionClass.addLogLine((String)language.get("loglineusefreespaceonly"));
             }
@@ -197,7 +198,7 @@ public class CopyThread extends Thread {
     }
     
     // Alle Dateien des gesamten Verzeichnisses unter
-    // Berücksichtigung des Filters indizieren
+    // Berï¿½cksichtigung des Filters indizieren
     public Vector indexFilteredFiles(File src, Vector filters, String filterText) {
         // lokale Variablen
         Vector myFiles = new Vector();
@@ -205,7 +206,7 @@ public class CopyThread extends Thread {
         String[] thisDir;
         // Verzeichnis einlesen
         thisDir = src.list();
-        // jeden Eintrag im Verzeichnis überprüfen
+        // jeden Eintrag im Verzeichnis ï¿½berprï¿½fen
         for (int i = 0; i < thisDir.length; i++) {
             if (cancelMe) {
                 cancelAndReturn(0);
@@ -219,8 +220,8 @@ public class CopyThread extends Thread {
                 myFunctionClass.addLogLine((String)language.get("loglineskipunaccessiblefileordir") + " " + currentFile.getPath());
                 continue;
             }
-            // Übernahme, wenn es sich um eine Datei handelt, ...
-            // ...die auf die Filterregeln paßt
+            // ï¿½bernahme, wenn es sich um eine Datei handelt, ...
+            // ...die auf die Filterregeln paï¿½t
             if (currentFile.isFile()){
                 this.allFilesInDir += 1;
                 myStatusWindow.lblFileName.setText(currentFile.getName());
@@ -250,7 +251,7 @@ public class CopyThread extends Thread {
         return myFiles;
     }
     
-    // Gesamtgröße der Files aus dem File-Vector holen
+    // Gesamtgrï¿½ï¿½e der Files aus dem File-Vector holen
     private long getSizeFromVector(Vector myVec){
         long size = 0;
         for (int i=0; i<myVec.size(); i++){
@@ -259,12 +260,12 @@ public class CopyThread extends Thread {
         return size;
     }
     
-    // Rückgabe der kopierten Dateianzahl
+    // Rï¿½ckgabe der kopierten Dateianzahl
     public long getFilesCopied(){
         return this.filesCopied;
     }
     
-    // Rückgabe der kopierten Datenmenge
+    // Rï¿½ckgabe der kopierten Datenmenge
     public long getByteCopied(){
         return this.byteCopied;
     }
@@ -277,7 +278,7 @@ public class CopyThread extends Thread {
         return String.valueOf(mb);
     }
     
-    // alle Dateien des übergebenen Vectors ins Zielverzeichnis kopieren
+    // alle Dateien des ï¿½bergebenen Vectors ins Zielverzeichnis kopieren
     public void copyRandomFiles(Vector randomFiles, File destDir, boolean force) {
         myFunctionClass.addLogHeadLine((String)language.get("loglinecopyto") + " " + destDir.getPath());
         myStatusWindow.lblAction.setText((String)language.get("statuswindowlabelactioncopyto") + " " + destDir.getPath());
@@ -298,7 +299,7 @@ public class CopyThread extends Thread {
                 myStatusWindow.lblPercent.setText(String.valueOf(100*byteCopied / getSizeFromVector(randomFiles)) + "%");
                 //if (copyFile(sourceFile, destFile, 1048576, force)){
                 if (copyFile(sourceFile, destFile, 1024, force)){
-                    // Modifizierungsdatum der Urpsrungsdatei übernehmen
+                    // Modifizierungsdatum der Urpsrungsdatei ï¿½bernehmen
                 	destFile.setLastModified(sourceFile.lastModified());
                     myFunctionClass.addLogLine(sourceFile.getPath() + " (" + sourceFile.length() + " B)");
                     byteCopied += destFile.length();
@@ -313,20 +314,20 @@ public class CopyThread extends Thread {
         cancelAndReturn(2);
     }
         
-    // Bei Abbruch durch Benutzer: Statusfenster schließen, Hauptfenster anzeigen
+    // Bei Abbruch durch Benutzer: Statusfenster schlieï¿½en, Hauptfenster anzeigen
     public void cancelAndReturn(int type) {
         // Auf jeden Fall: Statusfenster entladen, Hauptfenster anzeigen
         myMainWindow.setEnabled(true);
         myStatusWindow.setVisible(false);
         myStatusWindow.dispose();
 
-        // Abbruch während Indizieren
+        // Abbruch wï¿½hrend Indizieren
         if (type == 0) {
         	myFunctionClass.addLogLine((String)language.get("cancelledbyuser"));
             myMainWindow.showErrorDialog((String)language.get("cancelledbyuser"));
         }
 
-        // Abbruch während Kopieren / Ende des Kopierens
+        // Abbruch wï¿½hrend Kopieren / Ende des Kopierens
         else if ((type == 1) || (type == 2)) {
             // Loggen des Abbruchs
             if (type == 1) {
@@ -341,7 +342,7 @@ public class CopyThread extends Thread {
             myFunctionClass.addLogHeadLine((String)language.get("loglineresultofcopying"));
             myFunctionClass.addLogLine(String.valueOf(filesCopied) + " " +dateien);
             myFunctionClass.addLogLine(byteToMB(getByteCopied()) +" MB (" + String.valueOf(getByteCopied()) +" B)");
-            // Benutzer über abgeschlossenen Kopiervorgang informieren
+            // Benutzer ï¿½ber abgeschlossenen Kopiervorgang informieren
             myMainWindow.showInfoDialog((String)language.get("informationcopied") + ": " + String.valueOf(getFilesCopied()) + " " + dateien + "\n"
                                     + byteToMB(getByteCopied()) +" MB (" + String.valueOf(getByteCopied()) +" B)");
         }
@@ -368,8 +369,8 @@ public class CopyThread extends Thread {
     
     // einzelne Datei kopieren
     public boolean copyFile(File src, File dest, int bufSize, boolean force) throws IOException {
-        // Zieldatei löschen, wenn sie schon existiert...
-        // ...und "überschreiben" aktiv ist
+        // Zieldatei lï¿½schen, wenn sie schon existiert...
+        // ...und "ï¿½berschreiben" aktiv ist
         if (dest.exists()) {
             if (force) {
                 dest.delete();
@@ -399,7 +400,7 @@ public class CopyThread extends Thread {
                             }
                         }
                     }
-                    // "angefangene" Datei wieder löschen
+                    // "angefangene" Datei wieder lï¿½schen
                     if (dest.exists()){
                         dest.delete();
                     }
@@ -414,7 +415,7 @@ public class CopyThread extends Thread {
             }
         } 
         finally {
-            // Sicherstellen, daß die Streams auch bei einer Exception geschlossen werden
+            // Sicherstellen, daï¿½ die Streams auch bei einer Exception geschlossen werden
             if (in != null) {
                 try {
                     in.close();
@@ -424,14 +425,14 @@ public class CopyThread extends Thread {
                     }
                 }
             }
-            // Zieldatei löschen, wenn sie nicht so groß wie Quelldatei ist
+            // Zieldatei lï¿½schen, wenn sie nicht so groï¿½ wie Quelldatei ist
             if (dest.length() != src.length())
             	dest.delete();
         }
         return true;
     }
     
-    // Datei/Verzeichnis löschen
+    // Datei/Verzeichnis lï¿½schen
     public void deleteFileOrDir(File deleteMe) {
         if (!deleteMe.delete()) {
             myFunctionClass.addLogLine((String)language.get("loglinecantdeletefile") + " (" + deleteMe + ")");
@@ -458,7 +459,7 @@ public class CopyThread extends Thread {
         String[] thisDir;
         // Verzeichnis einlesen
         thisDir = src.list();
-        // jeden Eintrag im Verzeichnis überprüfen
+        // jeden Eintrag im Verzeichnis ï¿½berprï¿½fen
         for (int i = 0; i < thisDir.length; i++) {
             if (cancelMe) {
                 cancelAndReturn(0);
@@ -479,7 +480,7 @@ public class CopyThread extends Thread {
                 myStatusWindow.lblFileName.setText(currentFile.getName()); // currentFile.getName());
                 myStatusWindow.lblFiles.setText(String.valueOf((Integer.valueOf(myStatusWindow.lblFiles.getText())).intValue()+1));
             }
-            // Übernahme, wenn es sich um eine Datei handelt
+            // ï¿½bernahme, wenn es sich um eine Datei handelt
             else {
                 Vector recur = new Vector();
                 recur = indexFilesOnly(currentFile);       // rekursiver Methodenaufruf
@@ -500,7 +501,7 @@ public class CopyThread extends Thread {
         String[] thisDir;
         // Verzeichnis einlesen
         thisDir = src.list();
-        // jeden Eintrag im Verzeichnis überprüfen
+        // jeden Eintrag im Verzeichnis ï¿½berprï¿½fen
         for (int i = 0; i < thisDir.length; i++) {
             if (cancelMe) {
                 cancelAndReturn(0);

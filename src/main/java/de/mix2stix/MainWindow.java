@@ -1,9 +1,10 @@
+package de.mix2stix;
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
 //        =================               //
 //                                        //
-//  Tool zum Kopieren zufälliger Dateien  //
+//  Tool zum Kopieren zufï¿½lliger Dateien  //
 //                                        //
 ////////////////////////////////////////////
 
@@ -75,7 +76,7 @@ public class MainWindow extends JFrame {
     public Properties getLanguage() {
     	return this.language;
     }
-    // Deklaration der Programm- und Dateifunktionalitäten
+    // Deklaration der Programm- und Dateifunktionalitï¿½ten
     private LanguageFunction 		myLanguageFunction;
     private StatusWindow            myStatusWindow;
     private ProgramInfoViewer       myProgramInfoViewer;
@@ -84,7 +85,7 @@ public class MainWindow extends JFrame {
     	return this.myFunctionClass;
     }
 
-    // Konstruktor für das Programmfenster
+    // Konstruktor fï¿½r das Programmfenster
     public MainWindow() {
         super();
         this.setTitle(this.progname);
@@ -94,7 +95,7 @@ public class MainWindow extends JFrame {
         catch (Exception e){
         }
 
-        // Initialisierung der Programm- und Dateifunktionalitäten
+        // Initialisierung der Programm- und Dateifunktionalitï¿½ten
         this.myLanguageFunction		= new LanguageFunction(this);
         this.myFunctionClass        = new FunctionClass(this);
         this.myStatusWindow         = new StatusWindow(this);
@@ -103,7 +104,7 @@ public class MainWindow extends JFrame {
         // Spracheinstellungen laden
         this.updateLanguage();
 
-        // Menü aufbauen
+        // Menï¿½ aufbauen
         Mix2StixMenu menubar = new Mix2StixMenu();
         this.setJMenuBar(menubar);
         menubar.fillMenu();
@@ -112,7 +113,7 @@ public class MainWindow extends JFrame {
         MainPanel pnlMain = new MainPanel();
         setContentPane(pnlMain);
         pnlMain.fillGui();
-        // Größe und Position des Programmfensters berechnen
+        // Grï¿½ï¿½e und Position des Programmfensters berechnen
         Insets myInsets = this.getInsets();
         int myWidth = this.getContentPane().getWidth() + myInsets.left + myInsets.right;
         int myHeight = this.getContentPane().getHeight() + this.getJMenuBar().getHeight() + myInsets.top + myInsets.bottom;
@@ -155,7 +156,7 @@ public class MainWindow extends JFrame {
 
 
 //------------------------------------------------------------------------------
-//  MENÜ
+//  MENï¿½
 //------------------------------------------------------------------------------
     
     public class Mix2StixMenu extends JMenuBar implements ActionListener {
@@ -170,7 +171,7 @@ public class MainWindow extends JFrame {
     	private JMenuItem helpAbout;
     	
     	public Mix2StixMenu() {
-    		// Programm-Menü
+    		// Programm-Menï¿½
     		this.menuProgram = new JMenu("");
     		this.progCopy = new JMenuItem("");
     		progCopy.addActionListener(this);
@@ -195,13 +196,13 @@ public class MainWindow extends JFrame {
     		progLog.setAccelerator(kstrLog);
     		menuProgram.add(progLog);
     		this.add(menuProgram);
-    		// Sprachmenü
+    		// Sprachmenï¿½
     		this.menuLanguage = new JMenu("");
     		this.langLoad = new JMenuItem("");
     		langLoad.addActionListener(this);
     		menuLanguage.add(langLoad);
     		this.add(menuLanguage);
-    		// Hilfemenü
+    		// Hilfemenï¿½
     		this.menuHelp = new JMenu("");
     		this.helpAbout = new JMenuItem("");
     		helpAbout.addActionListener(this);
@@ -269,7 +270,7 @@ public class MainWindow extends JFrame {
     
     
 //------------------------------------------------------------------------------
-//  PROGRAMMOBERFLÄCHE
+//  PROGRAMMOBERFLï¿½CHE
 //------------------------------------------------------------------------------
 
 /*    // Content-Panel
@@ -324,7 +325,7 @@ public class MainWindow extends JFrame {
             	// DO_SOMETHING();
             }
         }
-        // Alle GUI-Elemente auf Standardwerte zurücksetzen
+        // Alle GUI-Elemente auf Standardwerte zurï¿½cksetzen
         public void resetValuesOfGuiElements(){
             this.lblAction.setText((String)language.get("statuswindowlabelactionnoaction"));
             this.lblFileName.setText("");
@@ -355,7 +356,7 @@ public class MainWindow extends JFrame {
         JCheckBox      chkForce;
         JButton        btnCopy;
 
-        // Konstruktor für Content-Panel
+        // Konstruktor fï¿½r Content-Panel
         public MainPanel(){
         	
             setLayout(null);
@@ -427,7 +428,7 @@ public class MainWindow extends JFrame {
             // Initial-Einstellungen aus Datei laden
             loadSettingsFromFile(myFunctionClass.getLatestSettingsFileFromConf());
             
-            // GUI mit Sprache füllen
+            // GUI mit Sprache fï¿½llen
             fillGui();
 
             this.setSize(400,180);
@@ -480,12 +481,12 @@ public class MainWindow extends JFrame {
                   showWarningDialog((String)language.get("warningforceoverwrite"));
                }
             }
-            // Button "Quellverzeichnis auswählen"
+            // Button "Quellverzeichnis auswï¿½hlen"
             else if (src == btnSrcDir) {
                 String currentInput = txtSrcDir.getText();
                 String lastInput = "";
                 JFileChooser chooser;
-                // zunächst schauen, was schon im Textfeld steht
+                // zunï¿½chst schauen, was schon im Textfeld steht
                 StringTokenizer t = new StringTokenizer(currentInput, ";");
                 if (t.hasMoreTokens()) {
                     // dem FileChooser das Parent-Verzeichnis des letzten Eintrags des Textfelds mitgeben
@@ -497,7 +498,7 @@ public class MainWindow extends JFrame {
                 		lastInput = temp.getParent();
                     chooser = new JFileChooser(lastInput);
                 }
-                // ansonsten FileChooser ohne Vorgabe öffnen
+                // ansonsten FileChooser ohne Vorgabe ï¿½ffnen
                 else chooser = new JFileChooser();
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 chooser.setApproveButtonText((String)language.get("choosesourcebuttonchoose"));
@@ -506,7 +507,7 @@ public class MainWindow extends JFrame {
                 chooser.setMultiSelectionEnabled(true);
                 int returnVal = chooser.showOpenDialog(this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    // alle gewählten Verz. mit ; trennen
+                    // alle gewï¿½hlten Verz. mit ; trennen
                 	String newInput = "";
                 	for (int i=0; i<chooser.getSelectedFiles().length; i++) {
                 		if (i == chooser.getSelectedFiles().length - 1)
@@ -514,7 +515,7 @@ public class MainWindow extends JFrame {
                 		else
                 			newInput = newInput + chooser.getSelectedFiles()[i].getPath() + ";";
                 	}
-                	// wenn schon etwas im Textfeld stand: mit ; anhängen
+                	// wenn schon etwas im Textfeld stand: mit ; anhï¿½ngen
                     if (!currentInput.equals(""))
                    		txtSrcDir.setText(currentInput + ";" + newInput);
                     // sonst einfach ins Textfeld schreiben
@@ -522,7 +523,7 @@ public class MainWindow extends JFrame {
                     	txtSrcDir.setText(newInput);
                 }
             }
-            // Button "Zielverzeichnis auswählen"
+            // Button "Zielverzeichnis auswï¿½hlen"
             else if (src == btnDestDir){
             	String currentInput = txtDestDir.getText();
                	File temp = new File(currentInput);
@@ -580,7 +581,7 @@ public class MainWindow extends JFrame {
 	        int returnVal = chooser.showSaveDialog(this);
 	        if (returnVal == JFileChooser.APPROVE_OPTION) {
 	        	String fileName = chooser.getSelectedFile().getName();
-	        	// auf Standard-Settings-Dateiendung (settingsext) prüfen, evtl. anhängen
+	        	// auf Standard-Settings-Dateiendung (settingsext) prï¿½fen, evtl. anhï¿½ngen
 	        	File settingsFile;
 	        	if (!(fileName.length() > 4) || !(fileName.substring(fileName.length()-4,fileName.length()).equals("." + settingsext)))
 	        		settingsFile = new File(chooser.getSelectedFile().getParent(), fileName + "." + settingsext);
@@ -607,10 +608,10 @@ public class MainWindow extends JFrame {
         }
 
 //------------------------------------------------------------------------------
-// EINGABEN ÜBERPRÜFEN
+// EINGABEN ï¿½BERPRï¿½FEN
 //------------------------------------------------------------------------------
 
-        // Eingaben überprüfen
+        // Eingaben ï¿½berprï¿½fen
         public boolean inputIsCorrect(){
             if (
                isValidPathInput(txtSrcDir.getText(), txtDestDir.getText())
@@ -623,7 +624,7 @@ public class MainWindow extends JFrame {
             else return false;
         }
 
-        // übergebene Inputs auf Korrektheit prüfen
+        // ï¿½bergebene Inputs auf Korrektheit prï¿½fen
         public boolean isValidPathInput(String sources, String destination) {
         	// Quellen
         	StringTokenizer st = new StringTokenizer(sources, ";");
@@ -644,7 +645,7 @@ public class MainWindow extends JFrame {
             return true;
         }
         
-        // übergebenen Pfad auf Existenz und Korrektheit prüfen
+        // ï¿½bergebenen Pfad auf Existenz und Korrektheit prï¿½fen
         public boolean isValidPath(String input, String nameOfSource) {
         	// leerer String
         	if (input.equals("")) {
@@ -690,7 +691,7 @@ public class MainWindow extends JFrame {
         }
 
 
-        // übergebenen long-Wert auf Korrektheit prüfen
+        // ï¿½bergebenen long-Wert auf Korrektheit prï¿½fen
         public boolean isValidLong(String value) {
         	// leerer String
         	if (value.equals("")) {
@@ -708,7 +709,7 @@ public class MainWindow extends JFrame {
 
         }
 
-        // TextArea auf leere Zeilen prüfen
+        // TextArea auf leere Zeilen prï¿½fen
         public boolean isValidFilters(String filters) {
             StringTokenizer t = new StringTokenizer (filters, ";");
             int i=0;
