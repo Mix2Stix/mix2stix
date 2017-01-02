@@ -44,7 +44,8 @@ public class MainWindow extends JFrame {
 
     // Globale Programminformationen
     final private String progname    	= "Mix2Stix";
-    final private String version     	= "1.1.4";    // >> [Engine].[GUI].[Feintuning, Bugfixing]
+	final private String version = "1.2.0"; // >> [Engine].[GUI].[Feintuning,
+											// Bugfixing]
     final private String author      	= "azett";
     final private String website     	= "www.mix2stix.de.ms";
     final private String lastchange  	= "2007-10-04";
