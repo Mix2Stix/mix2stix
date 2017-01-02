@@ -130,11 +130,11 @@ public class CopyThread extends Thread {
 
         // Abbruch bei 0 passenden Dateien...
         if (allSrcFiles.size() == 0) {
-            cancelAndReturn(3);
+			cancelAndReturn(CancelationType.NO_FILES_FIT);
         }
-        // Abbruch, wenn zu kopierende Daten 0 Byte gro� sind
+		// Abbruch, wenn zu kopierende Daten 0 Byte groß sind
         if (sizeOfAll == 0) {
-            cancelAndReturn(4);
+			cancelAndReturn(CancelationType.FILE_SIZE_ZERO);
         }
 
         // ...ansonsten 
@@ -207,7 +207,7 @@ public class CopyThread extends Thread {
             	// wenn "abbrechen"
 	            else if (answer == JOptionPane.CANCEL_OPTION) {
 	            	// ....Aktion beenden
-	            	cancelAndReturn(0);
+					cancelAndReturn(CancelationType.DURING_INDEXING);
 	            }
             }
             // wenn nicht gel�scht werden soll
@@ -233,7 +233,7 @@ public class CopyThread extends Thread {
         // jeden Eintrag im Verzeichnis �berpr�fen
         for (int i = 0; i < thisDir.length; i++) {
             if (cancelMe) {
-                cancelAndReturn(0);
+				cancelAndReturn(CancelationType.DURING_INDEXING);
             }
             currentFile = new File(src, thisDir[i]);
             // Abbruch bei fehlender Leseberechtigung
@@ -305,7 +305,7 @@ public class CopyThread extends Thread {
         for (int i=0; i<randomFiles.size(); i++){
             // Abbruch bei Flag
             if (cancelMe) {
-                cancelAndReturn(1);
+				cancelAndReturn(CancelationType.DURING_COPYING);
             }
             // Kopieren
             File sourceFile = (randomFiles.get(i));
@@ -343,26 +343,36 @@ public class CopyThread extends Thread {
                 //break;
             }
         }
-        cancelAndReturn(2);
+		cancelAndReturn(CancelationType.AFTER_COPYING);
     }
         
-    // Bei Abbruch durch Benutzer: Statusfenster schlie�en, Hauptfenster anzeigen
-	private void cancelAndReturn(int type) {
+	private enum CancelationType {
+		DURING_INDEXING, // 0
+		DURING_COPYING, // 1
+		AFTER_COPYING, // 2
+		NO_FILES_FIT, // 3
+		FILE_SIZE_ZERO // 4
+	}
+
+	// Bei Abbruch durch Benutzer: Statusfenster schließen, Hauptfenster
+	// anzeigen
+	private void cancelAndReturn(CancelationType type) {
         // Auf jeden Fall: Statusfenster entladen, Hauptfenster anzeigen
         myMainWindow.setEnabled(true);
         myStatusWindow.setVisible(false);
         myStatusWindow.dispose();
 
         // Abbruch w�hrend Indizieren
-        if (type == 0) {
+		if (type == CancelationType.DURING_INDEXING) {
         	myFunctionClass.addLogLine((String)language.get("cancelledbyuser"));
             myMainWindow.showErrorDialog((String)language.get("cancelledbyuser"));
         }
 
         // Abbruch w�hrend Kopieren / Ende des Kopierens
-        else if ((type == 1) || (type == 2)) {
+		else if ((CancelationType.DURING_COPYING == type) || (CancelationType.AFTER_COPYING == type)) {
             // Loggen des Abbruchs
-            if (type == 1) {
+			if (CancelationType.DURING_COPYING == type) {
+				// FIXME: Why is nothing done here?
             }
             String dateien;
             if (filesCopied == 1) {
@@ -380,12 +390,12 @@ public class CopyThread extends Thread {
         }
         
         // Keine passenden Dateien im Quellverzeichnis gefunden
-        else if (type == 3){
+		else if (CancelationType.NO_FILES_FIT == type) {
             myFunctionClass.addLogLine((String)language.get("errornomatchesfound"));
             myMainWindow.showWarningDialog((String)language.get("errornomatchesfound"));
         }
         
-        else if (type == 4){
+		else if (CancelationType.FILE_SIZE_ZERO == type) {
             myFunctionClass.addLogLine((String)language.get("truncation") + ": " + (String)language.get("errorzerosize"));
             myMainWindow.showErrorDialog((String)language.get("errorzerosize"));
         }
@@ -395,9 +405,9 @@ public class CopyThread extends Thread {
         suspend();
     }
 
-//------------------------------------------------------------------------------
-// GRUNDLEGENDE DATEIOPERATIONEN
-//------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------
+	// GRUNDLEGENDE DATEIOPERATIONEN
+	// ------------------------------------------------------------------------------
     
     // einzelne Datei kopieren
 	private boolean copyFile(File src, File dest, int bufSize, boolean force) throws IOException {
@@ -494,7 +504,7 @@ public class CopyThread extends Thread {
 		// jeden Eintrag im Verzeichnis überprüfen
         for (int i = 0; i < thisDir.length; i++) {
             if (cancelMe) {
-                cancelAndReturn(0);
+				cancelAndReturn(CancelationType.DURING_INDEXING);
             }
            currentFile = new File(src, thisDir[i]);
             // Abbruch bei fehlender Leseberechtigung
@@ -532,7 +542,7 @@ public class CopyThread extends Thread {
         // jeden Eintrag im Verzeichnis �berpr�fen
         for (int i = 0; i < thisDir.length; i++) {
             if (cancelMe) {
-                cancelAndReturn(0);
+				cancelAndReturn(CancelationType.DURING_INDEXING);
             }
            currentFile = new File(src, thisDir[i]);
 
