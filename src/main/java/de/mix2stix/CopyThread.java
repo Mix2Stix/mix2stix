@@ -1,4 +1,5 @@
 package de.mix2stix;
+
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
@@ -23,6 +24,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
 import javax.swing.JOptionPane;
 
 
@@ -34,6 +36,7 @@ public class CopyThread extends Thread {
     private String              filterarea;
     private boolean             clearDest;
     private boolean             force;
+	private int randomPrefixCount;
     private Properties			language;
     private MainWindow          myMainWindow;
     private FunctionClass       myFunctionClass;
@@ -47,13 +50,16 @@ public class CopyThread extends Thread {
     private boolean             cancelMe;
     
     
-    public CopyThread(MainWindow calledFrom, StatusWindow mix2stixfunction, FunctionClass filefunction, String sourcePath, String destPath, String maxSize, String filterarea, boolean clearDest, boolean force, Properties language) {
+	public CopyThread(MainWindow calledFrom, StatusWindow mix2stixfunction, FunctionClass filefunction,
+			String sourcePath, String destPath, String maxSize, String filterarea, boolean clearDest, boolean force,
+			int randomPrefixCount, Properties language) {
         this.sourcePath = sourcePath;
         this.destPath = destPath;
         this.maxSize = maxSize;
         this.filterarea = filterarea;
         this.clearDest = clearDest;
         this.force = force;
+		this.randomPrefixCount = randomPrefixCount;
         this.myMainWindow = calledFrom;
         this.myFunctionClass = filefunction;
         this.myStatusWindow = mix2stixfunction;
@@ -66,7 +72,8 @@ public class CopyThread extends Thread {
     }
     
     // ...und los gehts :)
-    public void run() {
+    @Override
+	public void run() {
         // �bergebenen FilterArea-String in Array zerlegen und Filtertext f�r die Ausgabe zusammenstellen
         Vector filters = filterAreaToVector(filterarea);
         String filterText = new String("");
@@ -80,17 +87,24 @@ public class CopyThread extends Thread {
         this.byteCopied = 0;
         this.filesCopied = 0;
 
-        // Zielverzeichnis pr�fen und ggfs. leeren
-        File destDir = new File(destPath);
-        myStatusWindow.lblAction.setText((String)language.get("statuswindowlabelactioncheckdestination") + " (" + destDir.getPath() + ")");
-        myFunctionClass.addLogHeadLine((String)language.get("loglinecheckdestination") + " " + destDir.getPath());
-        checkDestDir(destDir, clearDest);
+		// Zielverzeichnisse prüfen und ggfs. leeren
+		Vector allDestFiles = new Vector();
+		StringTokenizer st = new StringTokenizer(destPath, ";");
+		// F�r jedes Quellverzeichnis...
+		while (st.hasMoreTokens()) {
+			File destDir = new File(st.nextToken());
+			myStatusWindow.lblAction.setText(
+					(String) language.get("statuswindowlabelactioncheckdestination") + " (" + destDir.getPath() + ")");
+			myFunctionClass.addLogHeadLine((String) language.get("loglinecheckdestination") + " " + destDir.getPath());
+			checkDestDir(destDir, clearDest);
+			allDestFiles.addElement(destDir);
+		}
         
         this.allFilesInDir = 0;
         // Vektor mit allen Dateien der Quellverzeichnisse erstellen, die auf die Filterregeln passen
         Vector allSrcFiles = new Vector();
         // Einzelne Quellverzeichnisse auslesen
-        StringTokenizer st = new StringTokenizer(sourcePath, ";");
+		st = new StringTokenizer(sourcePath, ";");
         // F�r jedes Quellverzeichnis...
         while (st.hasMoreTokens()) {
             // Aktuelles Verzeichnis einlesen und EIntr�ge in tempor�ren Vektor schreiben
@@ -128,7 +142,7 @@ public class CopyThread extends Thread {
             // neuen Vektor mit zuf�lligen Dateien bis zur vorgegebenen Byte-Grenze f�llen
             Vector randomFiles = fillRandomVector(allSrcFiles, this.maxSize);
             // Kopier-Thread mit dem zuf�llig bef�llten Vektor starten
-            copyRandomFiles(randomFiles,destDir,force);
+			copyRandomFiles(randomFiles, allDestFiles, force);
         }
     }
     
@@ -279,10 +293,9 @@ public class CopyThread extends Thread {
     }
     
     // alle Dateien des �bergebenen Vectors ins Zielverzeichnis kopieren
-    public void copyRandomFiles(Vector randomFiles, File destDir, boolean force) {
-        myFunctionClass.addLogHeadLine((String)language.get("loglinecopyto") + " " + destDir.getPath());
-        myStatusWindow.lblAction.setText((String)language.get("statuswindowlabelactioncopyto") + " " + destDir.getPath());
+	public void copyRandomFiles(Vector randomFiles, Vector destDirs, boolean force) {
         myStatusWindow.lblPercent.setText("0%");
+        Random random = new Random();
         // alle Dateien des Vektors kopieren
         for (int i=0; i<randomFiles.size(); i++){
             // Abbruch bei Flag
@@ -291,7 +304,20 @@ public class CopyThread extends Thread {
             }
             // Kopieren
             File sourceFile = (File)(randomFiles.get(i));
-            File destFile = new File(destDir, ((File)(randomFiles.get(i))).getName());
+
+			File nextDestDir = (File) destDirs.get(i % destDirs.size());
+			myStatusWindow.lblAction
+					.setText((String) language.get("statuswindowlabelactioncopyto") + " " + nextDestDir.getPath());
+			myFunctionClass.addLogHeadLine((String) language.get("loglinecopyto") + " " + nextDestDir.getPath());
+
+			String targetFileName = sourceFile.getName();
+            if (randomPrefixCount> 0){
+				targetFileName = String.format("%0" + randomPrefixCount + "d",
+						random.nextInt((int) Math.floor(Math.pow(10, randomPrefixCount))))
+						+ " - " + targetFileName;
+            }
+
+			File destFile = new File(nextDestDir, targetFileName);
 
             try {
                 myStatusWindow.lblFileName.setText(sourceFile.getName() + " (" + byteToMB(sourceFile.length()) + "MB)");

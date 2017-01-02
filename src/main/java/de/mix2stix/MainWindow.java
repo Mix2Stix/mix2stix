@@ -1,4 +1,5 @@
 package de.mix2stix;
+
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
@@ -20,6 +21,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -212,7 +214,8 @@ public class MainWindow extends JFrame {
     	}
     	
     	// ActionEvent-Auswertung
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             Object src = new Object();
             src = e.getSource();
             if (src == progCopy) {
@@ -354,6 +357,9 @@ public class MainWindow extends JFrame {
         JLabel         lblForce;
         JCheckBox      chkClearDest;
         JCheckBox      chkForce;
+		JLabel lblRandomPrefix;
+		JTextField txtRandomPrefixCount;
+		JCheckBox chkRandomPrefix;
         JButton        btnCopy;
 
         // Konstruktor f�r Content-Panel
@@ -362,65 +368,79 @@ public class MainWindow extends JFrame {
             setLayout(null);
             lblSrcDir = new JLabel("", JLabel.LEFT);
             lblSrcDir.setFont(fontBold);
-            lblSrcDir.setBounds(10,10,100,25);
+			lblSrcDir.setBounds(10, 10, 120, 25);
             add(lblSrcDir);
             txtSrcDir = new JTextField();
             txtSrcDir.setFont(fontNormal);
-            txtSrcDir.setBounds(110,10,260,25);
+			txtSrcDir.setBounds(130, 10, 260, 25);
             add(txtSrcDir);
             btnSrcDir = new JButton("...");
             btnSrcDir.setFont(fontBold);
-            btnSrcDir.setBounds(370,10,20,25);
+			btnSrcDir.setBounds(390, 10, 20, 25);
             btnSrcDir.addActionListener(this);
             add(btnSrcDir);
             
             lblDestDir = new JLabel("", JLabel.LEFT);
             lblDestDir.setFont(fontBold);
-            lblDestDir.setBounds(10,40,100,25);
+			lblDestDir.setBounds(10, 40, 120, 25);
             add(lblDestDir);
             txtDestDir = new JTextField();
             txtDestDir.setFont(fontNormal);
-            txtDestDir.setBounds(110,40,260,25);
+			txtDestDir.setBounds(130, 40, 260, 25);
             add(txtDestDir);
             btnDestDir = new JButton("...");
             btnDestDir.setFont(fontBold);
-            btnDestDir.setBounds(370,40,20,25);
+			btnDestDir.setBounds(390, 40, 20, 25);
             btnDestDir.addActionListener(this);
             add(btnDestDir);
             
             lblMaxSize = new JLabel("", JLabel.LEFT);
             lblMaxSize.setFont(fontBold);
-            lblMaxSize.setBounds(10,70,100,25);
+			lblMaxSize.setBounds(10, 70, 120, 25);
             add(lblMaxSize);
             txtMaxSize = new JTextField();
             txtMaxSize.setFont(fontNormal);
-            txtMaxSize.setBounds(110,70,80,25);
+			txtMaxSize.setBounds(130, 70, 80, 25);
             add(txtMaxSize);
 
             lblFilter = new JLabel("", JLabel.LEFT);
             lblFilter.setFont(fontBold);
-            lblFilter.setBounds(10,100,100,25);
+			lblFilter.setBounds(10, 100, 120, 25);
             add(lblFilter);
             txtFilter = new JTextField("");
             txtFilter.setFont(fontNormal);
-            txtFilter.setBounds(110,100,80,25);
+			txtFilter.setBounds(130, 100, 80, 25);
             add(txtFilter);
 
             chkClearDest = new JCheckBox("");
             chkClearDest.setFont(fontBold);
-            chkClearDest.setBounds(200,70,200,25);
+			chkClearDest.setBounds(220, 70, 200, 25);
             chkClearDest.addActionListener(this);
             add(chkClearDest);
 
             chkForce = new JCheckBox("");
             chkForce.setFont(fontBold);
-            chkForce.setBounds(200,100,200,25);
+			chkForce.setBounds(220, 100, 200, 25);
             chkForce.addActionListener(this);
             add(chkForce);
 
+			lblRandomPrefix = new JLabel("", JLabel.LEFT);
+			lblRandomPrefix.setFont(fontBold);
+			lblRandomPrefix.setBounds(10, 130, 120, 25);
+			add(lblRandomPrefix);
+			txtRandomPrefixCount = new JTextField("");
+			txtRandomPrefixCount.setFont(fontNormal);
+			txtRandomPrefixCount.setBounds(130, 130, 80, 25);
+			add(txtRandomPrefixCount);
+			chkRandomPrefix = new JCheckBox("");
+			chkRandomPrefix.setFont(fontBold);
+			chkRandomPrefix.setBounds(220, 130, 200, 25);
+			chkRandomPrefix.addActionListener(this);
+			add(chkRandomPrefix);
+
             btnCopy = new JButton("");
             btnCopy.setFont(fontBold);
-            btnCopy.setBounds(10,140,380,30);
+			btnCopy.setBounds(10, 170, 400, 30);
             btnCopy.setToolTipText("");
             btnCopy.addActionListener(this);
             add(btnCopy);
@@ -431,7 +451,7 @@ public class MainWindow extends JFrame {
             // GUI mit Sprache f�llen
             fillGui();
 
-            this.setSize(400,180);
+			this.setSize(420, 180);
             this.setVisible(true);
         }
         
@@ -453,13 +473,16 @@ public class MainWindow extends JFrame {
             this.btnAbout.setToolTipText((String)language.get("buttonabouttooltip"));
         	this.btnLog.setText((String)language.get("buttonlog"));
             this.btnLog.setToolTipText((String)language.get("buttonlogtooltip"));*/
+			this.lblRandomPrefix.setText((String) language.get("labelrandomprefix") + ": ");
+			this.chkRandomPrefix.setText((String) language.get("checkboxrandomprefix"));
         	this.btnCopy.setText((String)language.get("buttoncopy"));
             this.btnCopy.setToolTipText((String)language.get("buttoncopytooltip"));
             this.repaint();
         }
         
         // ActionEvent-Auswertung
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             Object src = new Object();
             src = e.getSource();
             // Button "Kopieren"
@@ -526,18 +549,46 @@ public class MainWindow extends JFrame {
             // Button "Zielverzeichnis ausw�hlen"
             else if (src == btnDestDir){
             	String currentInput = txtDestDir.getText();
-               	File temp = new File(currentInput);
-            	// wenn currentInput nicht schon ein Wurzelverz. ist: den Chooser mit currentInputs Wurzelverz. aufrufen
-            	if (!(temp.getParent() == null))
-            		currentInput = temp.getParent();
-                JFileChooser chooser = new JFileChooser(currentInput);
+				String lastInput = "";
+				JFileChooser chooser;
+				// zun�chst schauen, was schon im Textfeld steht
+				StringTokenizer t = new StringTokenizer(currentInput, ";");
+				if (t.hasMoreTokens()) {
+					// dem FileChooser das Parent-Verzeichnis des letzten
+					// Eintrags des Textfelds mitgeben
+					while (t.hasMoreTokens())
+						lastInput = t.nextToken();
+					File temp = new File(lastInput);
+					// wenn lastInput nicht schon ein Wurzelverz. ist: den
+					// Chooser mit lastInputs Wurzelverz. aufrufen
+					if (!(temp.getParent() == null))
+						lastInput = temp.getParent();
+					chooser = new JFileChooser(lastInput);
+				}
+				// ansonsten FileChooser ohne Vorgabe �ffnen
+				else
+					chooser = new JFileChooser();
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 chooser.setApproveButtonText((String)language.get("choosedestinationbuttonchoose"));
                 chooser.setApproveButtonToolTipText((String)language.get("choosedestinationbuttonchoosetooltip"));
                 chooser.setDialogTitle((String)language.get("choosedestinationtitle"));
+				chooser.setMultiSelectionEnabled(true);
                 int returnVal = chooser.showOpenDialog(this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    txtDestDir.setText(chooser.getSelectedFile().getPath());
+					// alle gew�hlten Verz. mit ; trennen
+					String newInput = "";
+					for (int i = 0; i < chooser.getSelectedFiles().length; i++) {
+						if (i == chooser.getSelectedFiles().length - 1)
+							newInput = newInput + chooser.getSelectedFiles()[i].getPath();
+						else
+							newInput = newInput + chooser.getSelectedFiles()[i].getPath() + ";";
+					}
+					// wenn schon etwas im Textfeld stand: mit ; anh�ngen
+					if (!currentInput.equals(""))
+						txtDestDir.setText(currentInput + ";" + newInput);
+					// sonst einfach ins Textfeld schreiben
+					else
+						txtDestDir.setText(newInput);
                 }
             }
         }
@@ -603,7 +654,7 @@ public class MainWindow extends JFrame {
                                        txtMaxSize.getText(),
                                        txtFilter.getText(),
                                        chkClearDest.isSelected(),
-                                       chkForce.isSelected()
+					chkForce.isSelected(), chkRandomPrefix.isSelected() ? txtRandomPrefixCount.getText() : "0"
                                        );
         }
 
@@ -618,6 +669,7 @@ public class MainWindow extends JFrame {
                && isValidLong(txtMaxSize.getText())
                && isDifferentPath(txtSrcDir.getText(), txtDestDir.getText())
                && isValidFilters(txtFilter.getText())
+					&& isRandomPrefix(chkRandomPrefix.isSelected(), txtRandomPrefixCount.getText())
                ){
                   return true;
                }
@@ -625,24 +677,41 @@ public class MainWindow extends JFrame {
         }
 
         // �bergebene Inputs auf Korrektheit pr�fen
-        public boolean isValidPathInput(String sources, String destination) {
-        	// Quellen
-        	StringTokenizer st = new StringTokenizer(sources, ";");
-	        if (sources.equals("")) {
-	        	showErrorDialog((String)language.get("labelsourcedir") + ": " + (String)language.get("errornopathgiven"));
-	        	return false;
-	        }
-	        while (st.hasMoreTokens()) {
-	        	String token = st.nextToken();
-	            if (!isValidPath(token, "labelsourcedir") || !isDifferentPath(token, destination)) {
-	            	return false;
-	            }
-	        }
-	        // Ziel
-        	if (!isValidPath(destination, "labeldestinationdir")) {
-        		return false;
-        	}
-            return true;
+		public boolean isValidPathInput(String sources, String destinations) {
+			Vector destinationVector = new Vector();
+			// Ziele
+			StringTokenizer st = new StringTokenizer(destinations, ";");
+			if (destinations.equals("")) {
+				showErrorDialog((String) language.get("labeldestinationdir") + ": "
+						+ (String) language.get("errornopathgiven"));
+				return false;
+			}
+			while (st.hasMoreTokens()) {
+				String token = st.nextToken();
+				if (!isValidPath(token, "labeldestinationdir")) {
+					return false;
+				}
+				destinationVector.add(token);
+			}
+			// Quellen
+			st = new StringTokenizer(sources, ";");
+			if (sources.equals("")) {
+				showErrorDialog(
+						(String) language.get("labelsourcedir") + ": " + (String) language.get("errornopathgiven"));
+				return false;
+			}
+			while (st.hasMoreTokens()) {
+				String token = st.nextToken();
+				if (!isValidPath(token, "labelsourcedir")) {
+					return false;
+				}
+				for (int i = 0; i < destinationVector.size(); i++) {
+					if (!isDifferentPath(token, (String) destinationVector.get(i))) {
+						return false;
+					}
+				}
+			}
+			return true;
         }
         
         // �bergebenen Pfad auf Existenz und Korrektheit pr�fen
@@ -725,6 +794,12 @@ public class MainWindow extends JFrame {
             return true;
         }
 
+		public boolean isRandomPrefix(boolean checkBoxEnabled, String randomPrefixCount) {
+			if (checkBoxEnabled) {
+				return isValidLong(randomPrefixCount);
+			}
+			return true;
+		}
 //------------------------------------------------------------------------------
 // EINSTELLUNGEN LADEN / SPEICHERN
 //------------------------------------------------------------------------------

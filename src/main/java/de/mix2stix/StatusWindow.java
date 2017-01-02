@@ -1,4 +1,5 @@
 package de.mix2stix;
+
 ////////////////////////////////////////////
 //                                        //
 //         M I X 2 S T I X                //
@@ -128,7 +129,8 @@ public class StatusWindow extends JFrame implements ActionListener {
     }
 
     // zuf�llig Dateien kopieren, bis Limit erreicht wird
-    public void startCopying(String sourcePath, String destPath, String maxSize, String filterarea, boolean clearDest, boolean force) {
+	public void startCopying(String sourcePath, String destPath, String maxSize, String filterarea, boolean clearDest,
+			boolean force, String randomPrefixCount) {
         // Logfile initialisieren
         this.myFunctionClass.initLogFile();
         // Hauptprogrammfenster deaktivieren
@@ -138,7 +140,8 @@ public class StatusWindow extends JFrame implements ActionListener {
         resetValuesOfGuiElements();
         
         // CopyThread initialisieren und starten
-        tCopy = new CopyThread(myMainWindow, this, myFunctionClass, sourcePath, destPath, maxSize, filterarea, clearDest, force, this.language);
+		tCopy = new CopyThread(myMainWindow, this, myFunctionClass, sourcePath, destPath, maxSize, filterarea,
+				clearDest, force, Integer.valueOf(randomPrefixCount), this.language);
         tCopy.start();
     }
 
@@ -148,7 +151,8 @@ public class StatusWindow extends JFrame implements ActionListener {
 //------------------------------------------------------------------------------
 
     // Usereingabe verarbeiten
-    public void actionPerformed(ActionEvent e){
+    @Override
+	public void actionPerformed(ActionEvent e){
         Object src = new Object();
         src = e.getSource();
         // Button "Abbrechen"

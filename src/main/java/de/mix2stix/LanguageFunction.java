@@ -1,4 +1,5 @@
 package de.mix2stix;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -54,9 +55,11 @@ public class LanguageFunction {
     	p.put("buttoncopytooltip","Start copying");
     	p.put("checkboxcleardestination","Clear destination dir");
     	p.put("checkboxforceoverwrite","Replace existing files");
+		p.put("checkboxrandomprefix", "Add random prefix");
     	p.put("labeldestinationdir","Destination");
     	p.put("labelfilter","File filter");
     	p.put("labelmaxmb","MB to copy");
+		p.put("labelrandomprefix", "Random prefix");
     	p.put("labelsourcedir","Sources");
     	p.put("menuprogram","Program");
     	p.put("menuprogramcopy","Copy");
