@@ -104,6 +104,4 @@ modified program versions.
 
 ## Author
 
-azett -> Arvid Zimmermann
-http: www.mix2stix.de.ms
-mail: mix2stix@azett.com
+Arvid Zimmermann, [mix2stix.de](https://www.mix2stix.de)
